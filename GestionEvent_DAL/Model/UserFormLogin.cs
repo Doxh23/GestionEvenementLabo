@@ -1,0 +1,9 @@
+﻿namespace GestionEvent_DAL.model
+{
+    public class UserFormLogin
+    {
+
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+}
