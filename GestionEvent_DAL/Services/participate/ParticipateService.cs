@@ -34,6 +34,11 @@ namespace GestionEvent_DAL.Services.participate
             return _participateDBService.GetAll();
         }
 
+        public List<Participate> GetByEvent(int id)
+        {
+            return _participateDBService.GetByEvent(id);
+        }
+
         public Participate GetById(int id)
         {
            return _participateDBService.GetById(id);

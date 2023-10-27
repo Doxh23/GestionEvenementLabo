@@ -1,80 +1,55 @@
 ﻿using GestionEvent_DAL.Interface;
+using GestionEvent_DAL.Services.User;
+using GestionEvent_DAL.tools;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GestionEvent_DAL.Services
 {
-    public abstract  class BaseRepository<T> : IBaseRepository<T> 
+    public abstract  class BaseRepository<T> : IBaseRepository<T>  where T : class , new()
     {
-        protected abstract string _tableName {
-            get;
+        protected  string _tableName {
+            get;set;
         }
         protected readonly SqlConnection _connection;
             public BaseRepository(SqlConnection sqlconn)
         {
             _connection = sqlconn;
+            _tableName =  GetType().Name.Split(new string[]{ "DB" }, StringSplitOptions.None)[0];
         }
 
         public virtual bool Delete(int id)
         {
-            using (SqlCommand cmd = _connection.CreateCommand())
-            {
-                cmd.CommandText = $"delete  from {_tableName} where Id = @id";
-                cmd.Parameters.AddWithValue("@id", id);
 
-                _connection.Open();
-                int row = cmd.ExecuteNonQuery();
-                _connection.Close();
-                if(row > 0)
-                {
-                    return true;
-                }
-                return false;
-            }
+            SqlParameter[] parameter = new SqlParameter[]
+            {
+                new SqlParameter("id", id)
+            };
+            
+            return SQLFonction.AlterTable(_connection, $"delete  from {_tableName} where Id = @id", parameter);
         }
 
         public virtual List<T> GetAll()
         {
-            List<T> list = new List<T>();
-            using(SqlCommand cmd = _connection.CreateCommand())
-            {
-                cmd.CommandText = $"select * from {_tableName}";
+         
+            return SQLFonction.getList(_connection, $"select * from {_tableName}", mapper).Cast<T>().ToList();
 
-                _connection.Open();
-                using(SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        list.Add(mapper(reader));
-                    }
-                }
-                _connection.Close();
-            }
-            return list;
         }
 
         public virtual T  GetById(int id)
         {
-            T entity = default(T);
-            using (SqlCommand cmd = _connection.CreateCommand())
-            {
-                cmd.CommandText = $"select * from {_tableName} where Id = @id";
-                cmd.Parameters.AddWithValue("id",id);
-                _connection.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        entity = mapper(reader);
-                    }
-                }
-                _connection.Close();
-            }
-            return entity;
+            SqlParameter[] parameter = new SqlParameter[]
+          {
+                new SqlParameter("id", id)
+          };
+
+            return SQLFonction.getOne(_connection, $"select * from {_tableName}", mapper).Cast<T>().ToList();
+
         }
 
         public abstract T mapper(SqlDataReader reader);

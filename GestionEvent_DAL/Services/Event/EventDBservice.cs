@@ -1,6 +1,7 @@
 ﻿using GestionEvent_DAL.Interface;
 using GestionEvent_DAL.Model;
 using GestionEvent_DAL.Services.Status;
+using GestionEvent_DAL.tools;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -19,19 +20,12 @@ namespace GestionEvent_DAL.Services.Event
             _statusDBService = new statusDBService(sqlconn);
         }
 
-        protected override string _tableName
-        {
-            get
-            {
-                return "Events";
-            }
-        }
+ 
 
         public bool AddEvent(Model.Event e)
         {
-            using (SqlCommand cmd = _connection.CreateCommand())
-            {
-                cmd.CommandText = $"insert into {_tableName} values(@name,@startDate,@endDate,@location,@adress,@statusId)";
+
+
                 SqlParameter[] parameters = new SqlParameter[]
                 {
                     new SqlParameter("@name",e.Name),
@@ -43,62 +37,30 @@ namespace GestionEvent_DAL.Services.Event
 
 
                 };
-                cmd.Parameters.AddRange(parameters);
+          
 
-                _connection.Open();
-                int row = cmd.ExecuteNonQuery();
-                _connection.Close();
-
-                if (row > 0)
-                {
-                    return true;
-                }
-                return false;
-
-
-            }
+            return SQLFonction.AlterTable(_connection, $"insert into {_tableName} values(@name,@startDate,@endDate,@location,@adress,@statusId)", parameters);
         }
 
         //TODO FINIR DE RAJOUTER LES FONCTIONNALITE
         public override List<Model.Event> GetAll()
         {
 
-            List<Model.Event> list = new List<Model.Event>();
-            using (SqlCommand cmd = _connection.CreateCommand())
-            {
-                cmd.CommandText = $"select e.* , s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id";
+           
+           return  SQLFonction.getList(_connection, $"select e.* , s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id", mapper).Cast<Model.Event>().ToList();
 
-                _connection.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        list.Add(mapper(reader));
-                    }
-                }
-                _connection.Close();
-            }
-            return list;
+
+           
         }
 
         public override Model.Event GetById(int id){
-            Model.Event ev = null;
-            using( SqlCommand cmd = _connection.CreateCommand())
-            {
-                cmd.CommandText = $"select e.* , s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id where e.Id = @id";
-                cmd.Parameters.AddWithValue("id", id);
-                _connection.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        ev = mapper(reader);
-                    }
-                }
-                _connection.Close();
-            }
-            return ev;
-        
+            SqlParameter[] parameters = new SqlParameter[]
+                 {
+                    new SqlParameter("@id",id),   
+                 };
+    
+            return SQLFonction.getOne(_connection,  $"select e.* , s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id where e.Id = @id", mapper, parameters);
+      
             }
 
 

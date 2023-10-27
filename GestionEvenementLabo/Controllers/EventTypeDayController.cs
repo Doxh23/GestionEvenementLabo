@@ -1,4 +1,5 @@
 ﻿using GestionEvent_DAL.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -43,6 +44,7 @@ namespace Api_Event.Controllers
             }
         }
         // POST api/<EventTypeDayController>
+        [Authorize("ModoPolicy")]
         [HttpPost]
         public IActionResult addDays([FromBody] GestionEvent_DAL.Model.EventTypeDay etd)
         {

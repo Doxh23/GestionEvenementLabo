@@ -1,5 +1,6 @@
 ﻿using GestionEvent_DAL.Interface;
 using GestionEvent_DAL.Model;
+using GestionEvent_DAL.tools;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -10,47 +11,49 @@ using System.Threading.Tasks;
 
 namespace GestionEvent_DAL.Services.participate
 {
-    public class ParticipateDBService : BaseRepository<Participate> , IParticipate
+    public class ParticipateDBService : BaseRepository<Participate>, IParticipate
     {
         public ParticipateDBService(SqlConnection sqlconn) : base(sqlconn)
         {
         }
 
-        protected override string _tableName
-        {
-            get
-            {
-                return "Participate";
-            }
-        }
+     
 
         public bool addParticipate(Participate participate)
         {
-            using(SqlCommand cmd = _connection.CreateCommand())
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                cmd.CommandText = $"insert into {_tableName} values(@cosplayerId,@eventId,@date,@presence)";
-                cmd.Parameters.AddWithValue("cosplayerId",participate.Id) ;
-                cmd.Parameters.AddWithValue("eventId",participate.EventId) ;
-                cmd.Parameters.AddWithValue("date", participate.Date);
-                cmd.Parameters.AddWithValue("presence",participate.Presence) ;
+            new SqlParameter("cosplayerId",participate.Id) ,
+            new SqlParameter("eventId", participate.EventId),
+            new SqlParameter("date", participate.Date),
+            new SqlParameter("presence", participate.Presence)
+            };
 
-                _connection.Open();
-               int row = cmd.ExecuteNonQuery();
-                _connection.Close();
 
-                if(row > 0)
-                {
-                    return true;
-                }
-                return false;
-            }
+
+            return SQLFonction.AlterTable(_connection, $"insert into {_tableName} values(@cosplayerId,@eventId,@date,@presence)", parameters);
+        }
+
+        public List<Participate> GetByEvent(int id)
+        {
+            SqlParameter[] parameters = new SqlParameter[]
+            {
+                new SqlParameter("id", id),
+            };
+
+
+            return SQLFonction.getList(_connection, $"Select p.* , u.Nickname from  Participate as p join Users as u on u.Id = p.CosplayerId  where  EventId = @id", mapper, parameters).Cast<Participate>().ToList();
         }
 
         public override Participate mapper(SqlDataReader reader)
         {
             return new Participate()
             {
-                // TODDO
+                Id = (int)reader["CosplayerId"],
+                EventId = (int)reader["EventId"],
+                Date = ((DateTime)reader["date"]).ToString("d"),
+                Nickname = (string)reader["Nickname"],
+                Presence = (string)reader["Presence"]
             };
         }
     }

@@ -1,10 +1,13 @@
 ﻿using GestionEvent_DAL.Interface;
+using GestionEvent_DAL.Model;
+using GestionEvent_DAL.tools;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace GestionEvent_DAL.Services.Comments
 {
@@ -14,92 +17,47 @@ namespace GestionEvent_DAL.Services.Comments
         {
         }
 
-        protected override string _tableName
-        {
-            get
-            {
-                return "Comments";
-            }
-        }
+     
 
         public bool AddComment(Model.Comments comment)
         {
-            List<Model.Comments> list = new List<Model.Comments>();
-            using (SqlCommand cmd = _connection.CreateCommand())
-            {
-                cmd.CommandText = "insert into Comments values(@content,@PostDate,@UserId,@EventId)";
-                cmd.Parameters.AddWithValue("content", comment.content);
-                cmd.Parameters.AddWithValue("PostDate", DateTime.Now);
-                cmd.Parameters.AddWithValue("UserId", comment.UserId);
-                cmd.Parameters.AddWithValue("EventId", comment.EventId);
-                _connection.Open();
-                int row = cmd.ExecuteNonQuery();
-                _connection.Close();
-                if (row > 0)
-                {
-                    return true;
-                }
-                return false;
 
-            }
+            SqlParameter[] parameter = new SqlParameter[]
+            {
+                 new SqlParameter("content", comment.content),
+                new SqlParameter("PostDate", DateTime.Now),
+                new SqlParameter("UserId", comment.UserId),
+                new SqlParameter("EventId", comment.EventId),
+             };
+
+
+            return SQLFonction.AlterTable(_connection, "insert into Comments values(@content, @PostDate, @UserId, @EventId)", parameter);
         }
 
         public override List<Model.Comments> GetAll()
         {
-            List<Model.Comments> list = new List<Model.Comments>();
-            using (SqlCommand cmd = _connection.CreateCommand())
-            {
-                cmd.CommandText = "select c.Id as IdC,Content, PostDate , UserId from Comments as c join Users as u on u.Id = c.UserId order by PostDate ";
-                _connection.Open();
-                using (SqlDataReader r = cmd.ExecuteReader())
-                {
-                    while (r.Read())
-                    {
-                        list.Add(mapper(r));
-                    }
-                }
-                _connection.Close();
-                return list;
-            }
+
+            return SQLFonction.getList(_connection, "select c.Id as IdC, Content, PostDate,Nickname, UserId,EventId from Comments as c join Users as u on u.Id = c.UserId order by PostDate", mapper).Cast<Model.Comments>().ToList();
         }
         public List<Model.Comments> getByEvent(int id)
         {
-            List<Model.Comments> list = new List<Model.Comments>();
-            using (SqlCommand cmd = _connection.CreateCommand())
+
+            SqlParameter[] parameter = new SqlParameter[1]
             {
-                cmd.CommandText = $"select c.Id as IdC,Content, PostDate ,EventId,UserId, Nickname from {_tableName} as c join Users as u on u.Id = c.UserId where EventId = @id order by PostDate";
-                cmd.Parameters.AddWithValue("id", id);
-                _connection.Open();
-                using (SqlDataReader r = cmd.ExecuteReader())
-                {
-                    while (r.Read())
-                    {
-                        list.Add(mapper(r));
-                    }
-                }
-                _connection.Close();
-                return list;
-            }
+                new SqlParameter("id",id)
+            };
+            return SQLFonction.getList(_connection, $"select c.Id as IdC,Content, PostDate ,EventId,UserId, Nickname from {_tableName} as c join Users as u on u.Id = c.UserId where EventId = @id order by PostDate", mapper, parameter).Cast<Model.Comments>().ToList();
         }
 
         public override Model.Comments GetById(int id)
         {
-            Model.Comments comments = default(Model.Comments);
-            using (SqlCommand cmd = _connection.CreateCommand())
-            {
-                cmd.CommandText = $"select c.Id as IdC,Content, PostDate,EventId, UserId from {_tableName} as c join Users as u on u.Id = c.UserId";
-                cmd.Parameters.AddWithValue("id", id);
-                _connection.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        comments = mapper(reader);
-                    }
-                }
-                _connection.Close();
-            }
-            return comments;
+            SqlParameter[] parameter = new SqlParameter[1]
+          {
+                new SqlParameter("id",id)
+          };
+
+
+            return SQLFonction.getOne(_connection, $"select c.Id as IdC,Content,Nickname, PostDate,EventId, UserId from {_tableName} as c join Users as u on u.Id = c.UserId", mapper, parameter);
         }
 
         public override Model.Comments mapper(SqlDataReader reader)

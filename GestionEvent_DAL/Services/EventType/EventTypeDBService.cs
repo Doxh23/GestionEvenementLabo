@@ -15,13 +15,7 @@ namespace GestionEvent_DAL.Services.EventType
         {
         }
 
-        protected override string _tableName
-        {
-            get
-            {
-                return "EventType";
-            }
-        }
+     
 
         public override Model.EventType mapper(SqlDataReader reader)
         {

@@ -2,7 +2,9 @@
 using GestionEvent_DAL.model;
 using GestionEvent_DAL.Model;
 using GestionEvent_DAL.Services.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,9 +14,9 @@ namespace GestionEvenementLabo.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
+        private readonly UsersService _userService;
         private readonly TokenManager _tokenManager;
-        public UserController(UserService userService,TokenManager tk)
+        public UserController(UsersService userService,TokenManager tk)
         {
             _userService = userService;
             _tokenManager = tk;
@@ -58,10 +60,13 @@ namespace GestionEvenementLabo.Controllers
             User u = _userService.Login(user.Email,user.Password);
             if (u != null)
             {
+              
                 return Ok(_tokenManager.generateToken(u));
             }
             return BadRequest("mauvais identifiant");
         }
+       
+        [Authorize("ModoPolicy")]
         [HttpDelete("Delete/{id}")]
         public IActionResult Delete(int id)
         {

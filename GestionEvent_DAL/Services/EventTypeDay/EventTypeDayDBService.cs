@@ -1,5 +1,6 @@
 ﻿using GestionEvent_DAL.Interface;
 using GestionEvent_DAL.Model;
+using GestionEvent_DAL.tools;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -15,91 +16,54 @@ namespace GestionEvent_DAL.Services
         {
         }
 
-        protected override string _tableName
-        {
-            get
-            {
-                return "EventTypeDay";
-            }
-        }
 
         public bool AddDay(Model.EventTypeDay eventDay)
         {
-            using (SqlCommand cmd = _connection.CreateCommand())
+            SqlParameter[] parameters = new SqlParameter[]
             {
+                new SqlParameter("TypeId", eventDay.Type.Id) ,
+                new SqlParameter("dateDay", eventDay.date),
+               new SqlParameter("EventId", eventDay.EventId)
+            };
 
-                cmd.CommandText = "insert into EventTypeDay values(@TypeId,@EventId,@dateDay)";
-                cmd.Parameters.AddWithValue("TypeId", eventDay.Type.Id);
-                cmd.Parameters.AddWithValue("dateDay", eventDay.date);
-                cmd.Parameters.AddWithValue("EventId", eventDay.EventId); //TODO A MODIFIER (INSERER DES CLASS POUR LES IDS)
-                _connection.Open();
-                int row = cmd.ExecuteNonQuery();
-                _connection.Close();
-                if (row > 0)
-                {
-                    return true;
-                }
-                return false;
 
-            }
+            return SQLFonction.AlterTable(_connection, $"insert into {_tableName} values(@TypeId,@EventId,@dateDay)", parameters);
         }
 
         public override List<Model.EventTypeDay> GetAll()
         {
-            List<Model.EventTypeDay> list = new List<Model.EventTypeDay>();
-            using (SqlCommand cmd = _connection.CreateCommand())
-            {
-                cmd.CommandText = "select e.* , et.Name as Name  from EventTypeDay as e join EventType as et on e.TypeId = et.Id ";
-                _connection.Open();
-                using (SqlDataReader r = cmd.ExecuteReader())
-                {
-                    while (r.Read())
-                    {
-                        list.Add(mapper(r));
-                    }
-                }
-                _connection.Close();
-                return list;
-            }
+           
+            return SQLFonction.getList(_connection, $@"select e.* , et.Name as Name  from {_tableName} as e 
+                                                    join EventType as et on e.TypeId = et.Id ",
+                                                    mapper).Cast<Model.EventTypeDay>().ToList();
         }
         public List<Model.EventTypeDay> getByEvent(int id)
         {
-            List<Model.EventTypeDay> list = new List<Model.EventTypeDay>();
-            using (SqlCommand cmd = _connection.CreateCommand())
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                cmd.CommandText = $"select e.* , et.Name as Name  from EventTypeDay as e join EventType as et on e.TypeId = et.Id where EventId=@id";
-                cmd.Parameters.AddWithValue("id", id);
-                _connection.Open();
-                using (SqlDataReader r = cmd.ExecuteReader())
-                {
-                    while (r.Read())
-                    {
-                        list.Add(mapper(r));
-                    }
-                }
-                _connection.Close();
-                return list;
-            }
+                new SqlParameter("id", id) ,
+               
+            };
+        
+            return SQLFonction.getList(_connection, $@"select e.* , et.Name as Name  from {_tableName} as e
+                                                    join EventType as et on e.TypeId =
+                                                    et.Id where EventId=@id",
+                                                    mapper,parameters).Cast<Model.EventTypeDay>().ToList();
         }
 
         public override Model.EventTypeDay GetById(int id)
         {
-            Model.EventTypeDay comments = default(Model.EventTypeDay);
-            using (SqlCommand cmd = _connection.CreateCommand())
+            SqlParameter[] parameters = new SqlParameter[]
             {
-                cmd.CommandText = $"select e.* , et.Name as Name  from EventTypeDay as e join EventType as et on e.TypeId = et.Id where Id=@id";
-                cmd.Parameters.AddWithValue("id", id);
-                _connection.Open();
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        comments = mapper(reader);
-                    }
-                }
-                _connection.Close();
-            }
-            return comments;
+                new SqlParameter("id", id) ,
+
+            };
+          
+
+            return SQLFonction.getOne(_connection, $@"select e.* , et.Name as Name  from {_tableName}
+                                                   as e join EventType as et 
+                                                   on e.TypeId = et.Id where Id=@id",
+                                                   mapper,parameters);
         }
 
         public override Model.EventTypeDay mapper(SqlDataReader reader)

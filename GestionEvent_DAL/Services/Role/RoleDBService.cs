@@ -14,13 +14,7 @@ namespace GestionEvent_DAL.Services.Role
         {
         }
 
-        protected override string _tableName
-        {
-            get
-            {
-                return "Role";
-            }
-        }
+  
 
         public override Model.Role mapper(SqlDataReader reader)
         {

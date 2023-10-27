@@ -82,8 +82,9 @@
     <Compile Include="Services\Role\RoleService.cs" />
     <Compile Include="Services\Status\statusDBService.cs" />
     <Compile Include="Services\Status\StatusService.cs" />
-    <Compile Include="Services\User\UserDBService.cs" />
-    <Compile Include="Services\User\UserService.cs" />
+    <Compile Include="Services\User\UsersDBService.cs" />
+    <Compile Include="Services\User\UsersService.cs" />
+    <Compile Include="Tools\SQLFonction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

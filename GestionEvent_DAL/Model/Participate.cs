@@ -10,6 +10,7 @@ namespace GestionEvent_DAL.Model
     {
 
         public int Id { get; set; }
+        public string Nickname { get; set; }
         public int EventId { get; set; }
 
         public string Date { get; set; }

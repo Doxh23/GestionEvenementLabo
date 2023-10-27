@@ -15,14 +15,7 @@ namespace GestionEvent_DAL.Services.Status
         {
         }
 
-        protected override string _tableName
-        {
-            get
-            {
-                return "Status";
-            }
-        }
-
+   
         public override Model.Status mapper(SqlDataReader reader)
         {
             return new Model.Status()

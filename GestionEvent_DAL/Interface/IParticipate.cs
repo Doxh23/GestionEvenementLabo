@@ -10,6 +10,7 @@ namespace GestionEvent_DAL.Interface
     public interface IParticipate : IBaseRepository<Participate>
     {
         bool addParticipate(Participate participate);
+        List<Participate> GetByEvent(int id);
 
     }
 }

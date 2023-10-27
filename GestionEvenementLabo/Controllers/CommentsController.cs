@@ -1,5 +1,6 @@
 ﻿using GestionEvent_DAL.Model;
 using GestionEvent_DAL.Services.Comments;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -30,7 +31,6 @@ namespace GestionEvenementLabo.Controllers
 
         }
 
-        // GET api/<CommentsController>/5
         [HttpGet("event/{id}")]
         public IActionResult GetByEvent(int id)
         {
@@ -42,9 +42,22 @@ namespace GestionEvenementLabo.Controllers
                 return BadRequest(ex.Message);
             }
         }
-      
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            try
+            {
+                return Ok(_commentService.GetById(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
 
         // POST api/<CommentsController>
+        [Authorize]
         [HttpPost]
         public IActionResult AddComment([FromBody] Comments comment)
         {
@@ -63,8 +76,9 @@ namespace GestionEvenementLabo.Controllers
         }
 
 
-        // DELETE api/<CommentsController>/5
+       
         [HttpDelete("{id}")]
+        [Authorize]
         public IActionResult Delete(int id)
         {
             try

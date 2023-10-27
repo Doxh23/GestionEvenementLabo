@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace GestionEvent_DAL.Services.User
 {
-    public class UserService : IUserRepository
+    public class UsersService : IUserRepository
     {
-        private readonly UserDBService _userDBService;
-        public UserService(SqlConnection sqlconn) {
-        _userDBService = new UserDBService(sqlconn);
+        private readonly UsersDBService _userDBService;
+        public UsersService(SqlConnection sqlconn) {
+        _userDBService = new UsersDBService(sqlconn);
 
             
         }
