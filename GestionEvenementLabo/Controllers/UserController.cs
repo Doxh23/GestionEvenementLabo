@@ -37,7 +37,7 @@ namespace GestionEvenementLabo.Controllers
 
                 if(created)
                 {
-                    return Ok("votre compte a bien été créé");
+                    return Ok(created);
 
                 }
                 else

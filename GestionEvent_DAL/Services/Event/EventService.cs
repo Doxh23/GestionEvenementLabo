@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GestionEvent_DAL.Services.Event
 {
-    public class EventService 
+    public class EventService : IEvent
     {
 
         private readonly EventDBservice _eventDBservice;
@@ -24,13 +24,20 @@ namespace GestionEvent_DAL.Services.Event
 
         public List<Model.Event> GetAll()
         {
-            return _eventDBservice.GetAll();
+            return _eventDBservice.GetAll().Where(x => DateTime.Parse( x.EndDate) > DateTime.Now).ToList();
         }
 
         public Model.Event GetById(int id)
         {
             return _eventDBservice.GetById(id);
         }
+
+        public bool AddEvent(Model.Event e)
+        {
+            return _eventDBservice.AddEvent(e);
+        }
+
+  
 
  
     }

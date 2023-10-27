@@ -1,6 +1,10 @@
 using GestionEvenementLabo.tools;
 using GestionEvent_DAL.Services;
+using GestionEvent_DAL.Services.Comments;
 using GestionEvent_DAL.Services.Event;
+using GestionEvent_DAL.Services.EventType;
+using GestionEvent_DAL.Services.participate;
+using GestionEvent_DAL.Services.Role;
 using GestionEvent_DAL.Services.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -18,7 +22,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<EventService>();
 builder.Services.AddScoped<StatusService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<CommentService>();
 builder.Services.AddScoped<TokenManager>();
+builder.Services.AddScoped<EventTypeDayService>();
+builder.Services.AddScoped<ParticipateService>();
+builder.Services.AddScoped<RoleService>();
+builder.Services.AddScoped<EventTypeService>();
 builder.Services.AddTransient<SqlConnection>(pc => new SqlConnection(builder.Configuration.GetConnectionString("default")));
 
 ////builder.Services.AddAuthorization(opt => {
@@ -39,6 +48,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
             ValidateLifetime = true,
             ValidateIssuer = true,
             ValidateIssuerSigningKey = true,
+            ValidIssuer = "monserverapi",
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(TokenManager._secretKey)),
             ValidateAudience = false
 

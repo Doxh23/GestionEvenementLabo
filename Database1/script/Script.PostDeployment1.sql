@@ -21,7 +21,7 @@ insert into [EventType] values ('comics');
 insert into [EventType] values ('anime');
 insert into [EventType] values ('games');
 
-
+insert into [Status] values('not started');
 insert into [Status] values ('active');
 insert into [Status] values ('termined');
 insert into [Status] values ('cancel');

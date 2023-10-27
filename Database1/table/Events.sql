@@ -8,6 +8,6 @@
 	[Adress] varchar(250) not null,
 	[StatusId] int not null,
 
-	constraint C_Date  check(StartDate < EndDate),
+	constraint C_Date  check(StartDate <= EndDate),
 	constraint FK_Status foreign key (StatusId) references [Status](Id) on delete cascade
 )

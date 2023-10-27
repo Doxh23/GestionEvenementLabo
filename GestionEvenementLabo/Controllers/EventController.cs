@@ -1,4 +1,4 @@
-﻿using GestionEvent_DAL.Model;
+﻿using GestionEvent_DAL;
 using GestionEvent_DAL.Services.Event;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,8 +30,20 @@ namespace GestionEvenementLabo.Controllers
 
         // POST api/<EventController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] GestionEvent_DAL.Model.Event ev )
         {
+            try
+            {
+               bool success =  _eventService.AddEvent(ev);
+                if (!success)
+                {
+                    return BadRequest(success);
+                }
+                return Ok(success);
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         // PUT api/<EventController>/5

@@ -48,8 +48,11 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Interface\IBaseRepository.cs" />
+    <Compile Include="Interface\IEvent.cs" />
+    <Compile Include="Interface\IEventType.cs" />
     <Compile Include="Interface\IEventTypeDay.cs" />
     <Compile Include="Interface\IParticipate.cs" />
+    <Compile Include="Interface\IRole.cs" />
     <Compile Include="Interface\IUserRepository.cs" />
     <Compile Include="Model\Comments.cs" />
     <Compile Include="Model\Event.cs" />
@@ -69,10 +72,14 @@
     <Compile Include="Services\EventTypeDay\EventTypeDayDBService.cs" />
     <Compile Include="Services\EventTypeDay\EventTypeDayService.cs" />
     <Compile Include="Interface\ICommentsRepository.cs" />
+    <Compile Include="Services\EventType\EventTypeDBService.cs" />
+    <Compile Include="Services\EventType\EventTypeService.cs" />
     <Compile Include="Services\Event\EventDBservice.cs" />
     <Compile Include="Services\Event\EventService.cs" />
     <Compile Include="Services\participate\ParticipateDBService.cs" />
     <Compile Include="Services\participate\ParticipateService.cs" />
+    <Compile Include="Services\Role\RoleDBService.cs" />
+    <Compile Include="Services\Role\RoleService.cs" />
     <Compile Include="Services\Status\statusDBService.cs" />
     <Compile Include="Services\Status\StatusService.cs" />
     <Compile Include="Services\User\UserDBService.cs" />

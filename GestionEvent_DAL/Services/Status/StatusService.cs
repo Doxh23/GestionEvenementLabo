@@ -1,5 +1,6 @@
 ﻿using GestionEvent_DAL.Model;
 using GestionEvent_DAL.Services.Event;
+using GestionEvent_DAL.Services.Status;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -12,22 +13,22 @@ namespace GestionEvent_DAL.Services
     public class StatusService
     {
 
-        private readonly EventDBservice _StatusDBservice;
+        private readonly statusDBService _StatusDBservice;
         public StatusService(SqlConnection sqlconn)
         {
-            _StatusDBservice = new EventDBservice(sqlconn);
+            _StatusDBservice = new statusDBService(sqlconn);
         }
         public bool Delete(int id)
         {
             return _StatusDBservice.Delete(id);
         }
 
-        public List<Model.Event> GetAll()
+        public List<Model.Status> GetAll()
         {
             return _StatusDBservice.GetAll();
         }
 
-        public Model.Event GetById(int id)
+        public Model.Status GetById(int id)
         {
             return _StatusDBservice.GetById(id);
         }

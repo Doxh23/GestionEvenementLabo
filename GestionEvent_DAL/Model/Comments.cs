@@ -11,7 +11,7 @@ namespace GestionEvent_DAL.Model
 
         public int Id { get; set; }
         public string content { get; set; }
-        public string NickName { get; set; }
+        public int UserId { get; set; }
         public string PostDate { get; set; }
 
         public int EventId { get; set; }

@@ -49,7 +49,7 @@ namespace GestionEvent_DAL.Services
             List<Model.EventTypeDay> list = new List<Model.EventTypeDay>();
             using (SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = "select e.* , et.Name   from EventTypeDay as e join EventType as et on e.Id = et.Id ";
+                cmd.CommandText = "select e.* , et.Name as Name  from EventTypeDay as e join EventType as et on e.TypeId = et.Id ";
                 _connection.Open();
                 using (SqlDataReader r = cmd.ExecuteReader())
                 {
@@ -67,7 +67,7 @@ namespace GestionEvent_DAL.Services
             List<Model.EventTypeDay> list = new List<Model.EventTypeDay>();
             using (SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = $"select c.Id as IdC,Content, PostDate U.NickName as NickName from {_tableName} as c join Users as u on u.Id = c.UserId where EventId = @id";
+                cmd.CommandText = $"select e.* , et.Name as Name  from EventTypeDay as e join EventType as et on e.TypeId = et.Id where EventId=@id";
                 cmd.Parameters.AddWithValue("id", id);
                 _connection.Open();
                 using (SqlDataReader r = cmd.ExecuteReader())
@@ -87,7 +87,7 @@ namespace GestionEvent_DAL.Services
             Model.EventTypeDay comments = default(Model.EventTypeDay);
             using (SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = $"select e.* , et.Name as Name  from EventTypeDay as e join EventType as et on e.Id = et.Id where Id=@id";
+                cmd.CommandText = $"select e.* , et.Name as Name  from EventTypeDay as e join EventType as et on e.TypeId = et.Id where Id=@id";
                 cmd.Parameters.AddWithValue("id", id);
                 _connection.Open();
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -106,14 +106,14 @@ namespace GestionEvent_DAL.Services
         {
             return new Model.EventTypeDay()
             {
-                Id = (int)reader["IdE"],
+                Id = (int)reader["Id"],
                 EventId = (int)reader["EventId"],
                 Type = new Model.EventType()
                 {
-                    Id = (int)reader["EventId"],
+                    Id = (int)reader["TypeId"],
                     Name = (string)reader["Name"],
                 },
-                date = (string)reader["dateDay"]
+                date = ((DateTime)reader["Date"]).ToString("d")
 
             };
         }

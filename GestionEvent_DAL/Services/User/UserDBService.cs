@@ -117,7 +117,7 @@ namespace GestionEvent_DAL.Services.User
         {
             using (SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = "userRegister @pwd,@email,@role,@LastName,@FirstName,@GSM,NickName,@Allergie,@InfoSupp";
+                cmd.CommandText = "userRegister @pwd,@email,@role,@LastName,@FirstName,@GSM,@NickName,@Allergie,@InfoSupp";
 
                 cmd.Parameters.AddWithValue("@InfoSupp", user.InfoSupp);
                 cmd.Parameters.AddWithValue("@role", user.Role);
@@ -158,7 +158,7 @@ namespace GestionEvent_DAL.Services.User
                 GSM = (string)reader["GSM"],
                 LoginEmail = (string)reader["LoginEmail"],
                 NickName = (string)reader["NickName"],
-                Role = new Model.Role() { Id = (int)reader["RoleId"], Name = (string)reader["role"] }//TODO A CHANGER
+                Role = new Model.Role() { Id = (int)reader["RoleId"], Name = (string)reader["role"] }
 
                 //Role = (string)reader["RoleId"], // a changer
                 //Salt = (string)reader["SaltId"], //a changer

@@ -28,7 +28,7 @@ namespace GestionEvent_DAL.Services.participate
         {
             using(SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = $"insert into {_tableName} values(@cosplayerId,@eventId,@date,@presense)";
+                cmd.CommandText = $"insert into {_tableName} values(@cosplayerId,@eventId,@date,@presence)";
                 cmd.Parameters.AddWithValue("cosplayerId",participate.Id) ;
                 cmd.Parameters.AddWithValue("eventId",participate.EventId) ;
                 cmd.Parameters.AddWithValue("date", participate.Date);

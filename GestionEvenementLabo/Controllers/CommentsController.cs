@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GestionEvent_DAL.Model;
+using GestionEvent_DAL.Services.Comments;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -8,36 +10,75 @@ namespace GestionEvenementLabo.Controllers
     [ApiController]
     public class CommentsController : ControllerBase
     {
+        private readonly CommentService _commentService;
+        public CommentsController( CommentService comm) { 
+            _commentService = comm;
+        }
+
         // GET: api/<CommentsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult GetALL()
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                return Ok(_commentService.GetAll());
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
         }
 
         // GET api/<CommentsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("event/{id}")]
+        public IActionResult GetByEvent(int id)
         {
-            return "value";
+            try
+            {
+                return Ok(_commentService.getByEvent(id));
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+      
 
         // POST api/<CommentsController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult AddComment([FromBody] Comments comment)
         {
+            try
+            {
+                bool sucess = _commentService.AddComment(comment);
+                if (!sucess)
+                {
+                    return BadRequest("something wrong");
+                }
+                return Ok("commentaire ajouté");
+            }catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
-        // PUT api/<CommentsController>/5
-        [HttpPut("{id}")]
-        public void Put([FromBody] string value)
-        {
-        }
 
         // DELETE api/<CommentsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            try
+            {
+                bool success = _commentService.Delete(id);
+                if (!success)
+                {
+                    return BadRequest("something wrong");
+                }
+                return Ok("commentaire supprimé");
+            }catch(Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace GestionEvenementLabo.tools
                 new Claim(ClaimTypes.Role, user.Role.Id.ToString())
             };
 
-            JwtSecurityToken jwt = new(claims : claims , signingCredentials : credentials , expires : DateTime.Now.AddDays(1) );
+            JwtSecurityToken jwt = new(claims : claims , signingCredentials : credentials , expires : DateTime.Now.AddDays(1), issuer: "monserverapi.com", audience: "monsite.com");
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
 
 

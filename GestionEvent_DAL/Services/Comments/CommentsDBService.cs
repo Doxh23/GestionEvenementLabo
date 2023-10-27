@@ -29,7 +29,9 @@ namespace GestionEvent_DAL.Services.Comments
             {
                 cmd.CommandText = "insert into Comments values(@content,@PostDate,@UserId,@EventId)";
                 cmd.Parameters.AddWithValue("content", comment.content);
-                cmd.Parameters.AddWithValue("PostDate", comment.PostDate);
+                cmd.Parameters.AddWithValue("PostDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("UserId", comment.UserId);
+                cmd.Parameters.AddWithValue("EventId", comment.EventId);
                 _connection.Open();
                 int row = cmd.ExecuteNonQuery();
                 _connection.Close();
@@ -47,7 +49,7 @@ namespace GestionEvent_DAL.Services.Comments
             List<Model.Comments> list = new List<Model.Comments>();
             using (SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = "select c.Id as IdC,Content, PostDate ,U.NickName as NickName from Comments as c join Users as u on u.Id = c.UserId ";
+                cmd.CommandText = "select c.Id as IdC,Content, PostDate , UserId from Comments as c join Users as u on u.Id = c.UserId ";
                 _connection.Open();
                 using (SqlDataReader r = cmd.ExecuteReader())
                 {
@@ -65,7 +67,7 @@ namespace GestionEvent_DAL.Services.Comments
             List<Model.Comments> list = new List<Model.Comments>();
             using (SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = $"select c.Id as IdC,Content, PostDate U.NickName as NickName from {_tableName} as c join Users as u on u.Id = c.UserId where EventId = @id";
+                cmd.CommandText = $"select c.Id as IdC,Content, PostDate ,EventId, UserId from {_tableName} as c join Users as u on u.Id = c.UserId where EventId = @id";
                 cmd.Parameters.AddWithValue("id", id);
                 _connection.Open();
                 using (SqlDataReader r = cmd.ExecuteReader())
@@ -85,7 +87,7 @@ namespace GestionEvent_DAL.Services.Comments
             Model.Comments comments = default(Model.Comments);
             using (SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = $"select c.Id as IdC,Content, PostDate, U.NickName as NickName from {_tableName} as c join Users as u on u.Id = c.UserId";
+                cmd.CommandText = $"select c.Id as IdC,Content, PostDate,EventId, UserId from {_tableName} as c join Users as u on u.Id = c.UserId";
                 cmd.Parameters.AddWithValue("id", id);
                 _connection.Open();
                 using (SqlDataReader reader = cmd.ExecuteReader())
@@ -105,7 +107,7 @@ namespace GestionEvent_DAL.Services.Comments
             return new Model.Comments()
             {
                 content = (string)reader["Content"],
-                NickName = (string)reader["NickName"],
+                UserId = (int)reader["UserId"],
                 EventId = (int)reader["EventId"],
                 Id = (int)reader["IdC"],
                 PostDate = ((DateTime)reader["PostDate"]).ToString("d")
