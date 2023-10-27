@@ -53,9 +53,9 @@ namespace GestionEvenementLabo.Controllers
                 bool sucess = _commentService.AddComment(comment);
                 if (!sucess)
                 {
-                    return BadRequest("something wrong");
+                    return BadRequest(sucess);
                 }
-                return Ok("commentaire ajouté");
+                return Ok(sucess);
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);

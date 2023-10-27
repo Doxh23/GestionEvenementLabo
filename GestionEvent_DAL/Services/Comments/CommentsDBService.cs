@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GestionEvent_DAL.Services.Comments
 {
-    public class CommentsDBService : BaseRepository<Model.Comments>
+    public class CommentsDBService : BaseRepository<Model.Comments>, ICommentsRepository
     {
         public CommentsDBService(SqlConnection sqlconn) : base(sqlconn)
         {
@@ -49,7 +49,7 @@ namespace GestionEvent_DAL.Services.Comments
             List<Model.Comments> list = new List<Model.Comments>();
             using (SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = "select c.Id as IdC,Content, PostDate , UserId from Comments as c join Users as u on u.Id = c.UserId ";
+                cmd.CommandText = "select c.Id as IdC,Content, PostDate , UserId from Comments as c join Users as u on u.Id = c.UserId order by PostDate ";
                 _connection.Open();
                 using (SqlDataReader r = cmd.ExecuteReader())
                 {
@@ -67,7 +67,7 @@ namespace GestionEvent_DAL.Services.Comments
             List<Model.Comments> list = new List<Model.Comments>();
             using (SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = $"select c.Id as IdC,Content, PostDate ,EventId, UserId from {_tableName} as c join Users as u on u.Id = c.UserId where EventId = @id";
+                cmd.CommandText = $"select c.Id as IdC,Content, PostDate ,EventId,UserId, Nickname from {_tableName} as c join Users as u on u.Id = c.UserId where EventId = @id order by PostDate";
                 cmd.Parameters.AddWithValue("id", id);
                 _connection.Open();
                 using (SqlDataReader r = cmd.ExecuteReader())
@@ -108,6 +108,7 @@ namespace GestionEvent_DAL.Services.Comments
             {
                 content = (string)reader["Content"],
                 UserId = (int)reader["UserId"],
+                NickName = (string)reader["Nickname"],
                 EventId = (int)reader["EventId"],
                 Id = (int)reader["IdC"],
                 PostDate = ((DateTime)reader["PostDate"]).ToString("d")

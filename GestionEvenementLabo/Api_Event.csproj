@@ -15,11 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GestionEvent_DAL\GestionEvent_DAL.csproj" />
+    <Folder Include="model\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="model\" />
+    <ProjectReference Include="..\GestionEvent_DAL\GestionEvent_DAL.csproj" />
   </ItemGroup>
 
 </Project>

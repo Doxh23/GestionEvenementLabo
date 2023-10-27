@@ -6,7 +6,7 @@
 	UserId int not null,
 	EventId int not null
 
-	constraint FK_UserId foreign Key (UserId) references Users(Id),
-	constraint FK_EventId foreign Key (EventId) references [Events](Id)
+	constraint FK_UserId foreign Key (UserId) references Users(Id) on delete cascade ,
+	constraint FK_EventId foreign Key (EventId) references [Events](Id) on delete cascade
 
 )

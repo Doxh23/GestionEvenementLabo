@@ -6,6 +6,6 @@
 	[Date] datetime2(7) not null,
 
 
-	constraint FK_TypeIdEventTypeDay foreign key (TypeId) references EventType(Id),
-	constraint FK_EventIdEventTypeDay foreign key (EventId) references [Events](Id)
+	constraint FK_TypeIdEventTypeDay foreign key (TypeId) references EventType(Id) on delete cascade,
+	constraint FK_EventIdEventTypeDay foreign key (EventId) references [Events](Id) on delete cascade
 )
