@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api_Event", "GestionEvenementLabo\Api_Event.csproj", "{1B2CD094-044E-4D02-9A56-5650B89B7A7E}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database1", "Database1\Database1.sqlproj", "{A1E9191C-3D0B-4344-B645-0FA9E1EBD2BF}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "EventDb", "Database1\EventDb.sqlproj", "{A1E9191C-3D0B-4344-B645-0FA9E1EBD2BF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestionEvent_DAL", "GestionEvent_DAL\GestionEvent_DAL.csproj", "{B9A00758-84B6-4FD1-9C08-9C957FC63AF1}"
 EndProject
