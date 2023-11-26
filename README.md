@@ -4,7 +4,12 @@
 
 ## Description
   une Api permettant de gerer une application de gerance d'evenement : 
+  
           -login
+          
           -register
+          
           -s'inscrire a une evenement
+          
           -voir la liste d'evenement
+          
