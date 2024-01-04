@@ -31,7 +31,7 @@ namespace GestionEvenementLabo.Controllers
         {
            return Ok (_eventService.GetById(id));
         }
-        [Authorize("ModoPolicy")]
+       
         [HttpPost]
         public IActionResult AddEvent([FromBody] GestionEvent_DAL.Model.Event ev )
         {

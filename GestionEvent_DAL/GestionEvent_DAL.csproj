@@ -74,7 +74,7 @@
     <Compile Include="Interface\ICommentsRepository.cs" />
     <Compile Include="Services\EventType\EventTypeDBService.cs" />
     <Compile Include="Services\EventType\EventTypeService.cs" />
-    <Compile Include="Services\Event\EventDBservice.cs" />
+    <Compile Include="Services\Event\EventsDBservice.cs" />
     <Compile Include="Services\Event\EventService.cs" />
     <Compile Include="Services\participate\ParticipateDBService.cs" />
     <Compile Include="Services\participate\ParticipateService.cs" />

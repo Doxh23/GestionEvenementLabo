@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace GestionEvent_DAL.Services.Event
 {
-    public class EventDBservice : BaseRepository<Model.Event>, IEvent
+    public class EventsDBservice : BaseRepository<Model.Event>, IEvent
     {
         private readonly statusDBService _statusDBService;
-        public EventDBservice(SqlConnection sqlconn) : base(sqlconn)
+        public EventsDBservice(SqlConnection sqlconn) : base(sqlconn)
         {
             _statusDBService = new statusDBService(sqlconn);
         }

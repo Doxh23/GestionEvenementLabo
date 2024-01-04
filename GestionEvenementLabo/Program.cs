@@ -27,9 +27,9 @@ builder.Services.AddAuthentication(x =>
     x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateLifetime = true,
-        ValidateIssuer = true,
-        ValidAudience = "https://localhost:7020/",
-        ValidIssuer = "https://localhost:7213/",
+        ValidateIssuer = false,
+        ValidAudience = "https://localhost:7213/",
+ 
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(TokenManager._secretKey)),
@@ -50,7 +50,7 @@ builder.Services.AddScoped<ParticipateService>();
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<EventTypeService>();
 //builder.Services.AddTransient<SqlConnection>(pc => new SqlConnection(builder.Configuration.GetConnectionString("default")));
-builder.Services.AddTransient<SqlConnection>(pc => new SqlConnection(builder.Configuration.GetConnectionString("Maison")));
+builder.Services.AddTransient<SqlConnection>(pc => new SqlConnection(builder.Configuration.GetConnectionString("default")));
 
 ////builder.Services.AddAuthorization(opt => {
 ////    opt.AddPolicy("AdminPolicy", o => o.RequireRole("Admin"));
@@ -70,7 +70,7 @@ builder.Services.AddAuthorization(options =>
 
 
 var app = builder.Build();
-
+app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

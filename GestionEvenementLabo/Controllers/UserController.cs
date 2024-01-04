@@ -61,7 +61,7 @@ namespace GestionEvenementLabo.Controllers
             if (u != null)
             {
               
-                return Ok(_tokenManager.generateToken(u));
+                return Ok(new { Token= _tokenManager.generateToken(u)});
             }
             return BadRequest("mauvais identifiant");
         }

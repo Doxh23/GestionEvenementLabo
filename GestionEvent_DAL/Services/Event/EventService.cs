@@ -12,10 +12,10 @@ namespace GestionEvent_DAL.Services.Event
     public class EventService : IEvent
     {
 
-        private readonly EventDBservice _eventDBservice;
+        private readonly EventsDBservice _eventDBservice;
         public EventService(SqlConnection sqlconn)
         {
-            _eventDBservice = new EventDBservice(sqlconn);
+            _eventDBservice = new EventsDBservice(sqlconn);
         }
         public bool Delete(int id)
         {
