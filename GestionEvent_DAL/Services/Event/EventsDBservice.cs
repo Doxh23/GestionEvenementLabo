@@ -20,14 +20,15 @@ namespace GestionEvent_DAL.Services.Event
             _statusDBService = new statusDBService(sqlconn);
         }
 
- 
 
-        public bool AddEvent(Model.Event e)
+
+        public int AddEvent(Model.Event e)
         {
-
-
+            using (SqlCommand cmd = _connection.CreateCommand())
+            {
+                cmd.CommandText = $"insert into {_tableName} output Inserted.Id values(@name,@startDate,@endDate,@location,@adress,@statusId)";
                 SqlParameter[] parameters = new SqlParameter[]
-                {
+                               {
                     new SqlParameter("@name",e.Name),
                     new SqlParameter("@startDate",e.StartDate),
                     new SqlParameter("@endDate",e.EndDate),
@@ -36,32 +37,42 @@ namespace GestionEvent_DAL.Services.Event
                     new SqlParameter("@statusId",e.status.Id)
 
 
-                };
-          
+                               };
+                cmd.Parameters.AddRange(parameters);
+                _connection.Open();
+                int id = (int)cmd.ExecuteScalar();
+                _connection.Close();
+                return id;
 
-            return SQLFonction.AlterTable(_connection, $"insert into {_tableName} values(@name,@startDate,@endDate,@location,@adress,@statusId)", parameters);
+
+            }
+
+
+
+
         }
 
         //TODO FINIR DE RAJOUTER LES FONCTIONNALITE
         public override List<Model.Event> GetAll()
         {
 
-           
-           return  SQLFonction.getList(_connection, $"select e.* , s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id", mapper).Cast<Model.Event>().ToList();
+
+            return SQLFonction.getList(_connection, $"select e.* , s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id", mapper).Cast<Model.Event>().ToList();
 
 
-           
+
         }
 
-        public override Model.Event GetById(int id){
+        public override Model.Event GetById(int id)
+        {
             SqlParameter[] parameters = new SqlParameter[]
                  {
-                    new SqlParameter("@id",id),   
+                    new SqlParameter("@id",id),
                  };
-    
-            return SQLFonction.getOne(_connection,  $"select e.* , s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id where e.Id = @id", mapper, parameters);
-      
-            }
+
+            return SQLFonction.getOne(_connection, $"select e.* , s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id where e.Id = @id", mapper, parameters);
+
+        }
 
 
         public override Model.Event mapper(SqlDataReader reader)

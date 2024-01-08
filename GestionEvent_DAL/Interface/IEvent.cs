@@ -9,6 +9,6 @@ namespace GestionEvent_DAL.Interface
 {
     public interface IEvent : IBaseRepository<Event>
     {
-        bool AddEvent(Event e);
+        int AddEvent(Event e);
     }
 }

@@ -44,7 +44,7 @@ namespace Api_Event.Controllers
             }
         }
         // POST api/<EventTypeDayController>
-        [Authorize("ModoPolicy")]
+        //[Authorize("ModoPolicy")]
         [HttpPost]
         public IActionResult addDays([FromBody] GestionEvent_DAL.Model.EventTypeDay etd)
         {

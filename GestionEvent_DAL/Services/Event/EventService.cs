@@ -32,7 +32,7 @@ namespace GestionEvent_DAL.Services.Event
             return _eventDBservice.GetById(id);
         }
 
-        public bool AddEvent(Model.Event e)
+        public int AddEvent(Model.Event e)
         {
             return _eventDBservice.AddEvent(e);
         }

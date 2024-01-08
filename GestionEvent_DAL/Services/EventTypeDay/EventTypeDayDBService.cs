@@ -21,8 +21,8 @@ namespace GestionEvent_DAL.Services
         {
             SqlParameter[] parameters = new SqlParameter[]
             {
-                new SqlParameter("TypeId", eventDay.Type.Id) ,
-                new SqlParameter("dateDay", eventDay.date),
+               new SqlParameter("TypeId", eventDay.Type.Id) ,
+               new SqlParameter("dateDay", eventDay.date),
                new SqlParameter("EventId", eventDay.EventId)
             };
 

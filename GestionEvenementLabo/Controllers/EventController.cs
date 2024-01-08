@@ -37,12 +37,10 @@ namespace GestionEvenementLabo.Controllers
         {
             try
             {
-               bool success =  _eventService.AddEvent(ev);
-                if (!success)
-                {
-                    return BadRequest(success);
-                }
-                return Ok(success);
+               
+                    return Ok(_eventService.AddEvent(ev));
+                
+              
             }catch(Exception ex)
             {
                 return BadRequest(ex.Message);
