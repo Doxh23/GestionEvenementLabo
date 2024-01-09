@@ -81,5 +81,6 @@
   <ItemGroup>
     <None Include="Database1.publish.xml" />
     <None Include="EventDb.publish.xml" />
+    <None Include="EventDb_1.publish.xml" />
   </ItemGroup>
 </Project>

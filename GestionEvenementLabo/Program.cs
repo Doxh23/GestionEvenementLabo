@@ -50,7 +50,7 @@ builder.Services.AddScoped<ParticipateService>();
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<EventTypeService>();
 //builder.Services.AddTransient<SqlConnection>(pc => new SqlConnection(builder.Configuration.GetConnectionString("default")));
-builder.Services.AddTransient<SqlConnection>(pc => new SqlConnection(builder.Configuration.GetConnectionString("Maison")));
+builder.Services.AddTransient<SqlConnection>(pc => new SqlConnection(builder.Configuration.GetConnectionString("default")));
 
 ////builder.Services.AddAuthorization(opt => {
 ////    opt.AddPolicy("AdminPolicy", o => o.RequireRole("Admin"));

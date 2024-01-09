@@ -26,10 +26,11 @@ namespace GestionEvent_DAL.Services.Event
         {
             using (SqlCommand cmd = _connection.CreateCommand())
             {
-                cmd.CommandText = $"insert into {_tableName} output Inserted.Id values(@name,@startDate,@endDate,@location,@adress,@statusId)";
+                cmd.CommandText = $"insert into {_tableName} output Inserted.Id values(@name,@description,@startDate,@endDate,@location,@adress,@statusId)";
                 SqlParameter[] parameters = new SqlParameter[]
                                {
                     new SqlParameter("@name",e.Name),
+                    new SqlParameter("@description",e.Description),
                     new SqlParameter("@startDate",e.StartDate),
                     new SqlParameter("@endDate",e.EndDate),
                     new SqlParameter("@location",e.location),
@@ -57,7 +58,7 @@ namespace GestionEvent_DAL.Services.Event
         {
 
 
-            return SQLFonction.getList(_connection, $"select e.* , s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id", mapper).Cast<Model.Event>().ToList();
+            return SQLFonction.getList(_connection, $"select e.* ,Description, s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id", mapper).Cast<Model.Event>().ToList();
 
 
 
@@ -70,7 +71,7 @@ namespace GestionEvent_DAL.Services.Event
                     new SqlParameter("@id",id),
                  };
 
-            return SQLFonction.getOne(_connection, $"select e.* , s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id where e.Id = @id", mapper, parameters);
+            return SQLFonction.getOne(_connection, $"select e.* ,Description, s.Id as IdStatus , s.Name as NameStatus from Events as e join [Status] as s on e.StatusId = s.Id where e.Id = @id", mapper, parameters);
 
         }
 
@@ -80,6 +81,7 @@ namespace GestionEvent_DAL.Services.Event
             return new Model.Event()
             {
                 Id = (int)reader["Id"],
+                Description = (string)reader["Description"],
                 Adress = (string)reader["Adress"],
                 Name = (string)reader["Name"],
                 StartDate = ((DateTime)reader["StartDate"]).ToString("d"),

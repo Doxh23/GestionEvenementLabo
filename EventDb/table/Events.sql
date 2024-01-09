@@ -2,6 +2,7 @@
 (
 	[Id] INT NOT NULL PRIMARY KEY identity,
 	[Name] varchar(70) not null ,
+	 [Description] varchar(70) not null ,
 	[StartDate] datetime2(7) not null,
 	[EndDate] datetime2(7) not null,
 	[Location] varchar(50) not null,

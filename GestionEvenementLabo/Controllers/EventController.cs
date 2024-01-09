@@ -1,4 +1,5 @@
 ﻿using GestionEvent_DAL;
+using GestionEvent_DAL.Model;
 using GestionEvent_DAL.Services.Event;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,16 @@ namespace GestionEvenementLabo.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-           return Ok (_eventService.GetById(id));
+            Event ev = _eventService.GetById(id);
+                if(ev != null)
+            {
+                return Ok(ev);
+            }
+            else
+            {
+                return BadRequest("item not found");
+            }
+          
         }
        
         [HttpPost]
